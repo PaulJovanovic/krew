@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Krew</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <% if current_user %>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '<%= ENV["FACEBOOK_APP_ID"] %>',
+          status     : true,
+          xfbml      : true
+        });
+
+        // FB.api(
+        //   "/{friendlist-id}",
+        //   function (response) {
+        //     if (response && !response.error) {
+        //       /* handle the result */
+        //     }
+        //   }
+        // );
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/all.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+  <% end %>
+  <%= render partial: "layouts/navbar" %>
+  <div class="container phxs mtm">
+    <%= yield %>
+  </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<div class="row nmhxxs">
+  <div class="col-sm-8 col-sm-offset-2 phxxs">
+    <div class="fsxl fwxl c-red text-center"><%= @group.name %></div>
+    <div class="fss c-red text-center"><%= @group.tagline %></div>
+    <div class="row nmhxxs mtm">
+      <% @group.users.each do |user| %>
+        <div class="col-xs-4 phxxs mts">
+          <%= image_tag user.profile_picture_large, class: "img-responsive bras" %>
+        </div>
+        <div class="col-xs-4 phxxs mts">
+          <%= image_tag user.profile_picture_large, class: "img-responsive bras" %>
+        </div>
+        <div class="col-xs-4 phxxs mts">
+          <%= image_tag user.profile_picture_large, class: "img-responsive bras" %>
+        </div>
+        <div class="col-xs-4 phxxs mts">
+          <%= image_tag user.profile_picture_large, class: "img-responsive bras" %>
+        </div>
+        <div class="col-xs-4 phxxs mts">
+          <%= image_tag user.profile_picture_large, class: "img-responsive bras" %>
+        </div>
+      <% end %>
+    </div>
+    <table class="mtxl mha">
+      <tr>
+        <td class="phxs fss fwxl c-red">
+          <%= @group.location.city %>
+        </td>
+        <td class="phxxxs fss c-dark-red">
+          <%= @group.start_date.strftime("%m/%d/%y") %>
+        </td>
+        <td class="phxxxs fss c-dark-red">
+          &mdash;
+        </td>
+        <td class="phxxxs fss c-dark-red">
+          <%= @group.end_date.strftime("%m/%d/%y") %>
+        </td>
+      </tr>
+    </table>
+    <div class="row nmhxxs mtxl">
+      <% @group.interests.each do |interest| %>
+        <div class="col-xs-6 phxxs mtxs">
+          <table class="full-width">
+            <tr>
+              <td class="dhxs" valign="top">
+                <div class="daxs bg-red braxs"></div>
+              </td>
+              <td class="plxs" valign="top">
+                <div class="fss c-0">
+                  <%= interest.name %>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="row nmhxxs mtxl">
+  <div class="col-sm-6 col-sm-offset-3 phxxs">
+    <%= link_to new_group_path do %>
+      <div class="bras bss bwam bc-dark-red bc-red-hover c-dark-red c-red-hover fsxl fwl dvxl lhxl">
+        <div class="text-center">
+          Start finding other groups <i class="relative mlxs fa fa-chevron-right lhxl"></i>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

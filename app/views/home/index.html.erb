@@ -1,0 +1,12 @@
+<div class="row">
+  Signed in as <strong><%= current_user.name %></strong>!
+  <%= link_to "Sign out", signout_path, id: "sign_out" %>
+  <%= image_tag current_user.profile_picture %>
+</div>
+<div class="row">
+  <div class="col-sm-4 col-sm-offset-4">
+    <%= link_to new_group_path do %>
+      <div class="btn btn-success full-width">Create Group</div>
+    <% end %>
+  </div>
+</div>

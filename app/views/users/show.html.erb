@@ -1,0 +1,30 @@
+<div class="row nmhxxs">
+  <div class="col-sm-8 col-sm-offset-2 phxxs">
+    <%= link_to new_group_path do %>
+      <div class="relative bras bss bwam bc-dark-red bc-red-hover c-dark-red c-red-hover fsxl fwl dvl lhl">
+        <div class="absolute left mlxs">
+          <i class="fa fa-plus fsxxl lhl"></i>
+        </div>
+        <div class="text-center">
+          Create a Group
+        </div>
+      </div>
+    <% end %>
+    <div class="row nmhxs">
+      <div class="col-xs-6 phxs mtl">
+        <%= image_tag @user.profile_picture_large, class: "img-responsive bras" %>
+      </div>
+      <div class="col-xs-6 phxs mtl">
+        <div class="mtxxxs-plus fwxl">
+          <%= @user.name %>
+        </div>
+        <div class="mtxxxs-plus">
+          <%= @user.location %>
+        </div>
+        <div class="mtxxxs-plus">
+          <%= @user.available_text %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

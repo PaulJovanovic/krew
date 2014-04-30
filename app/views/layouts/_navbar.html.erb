@@ -1,0 +1,16 @@
+<div class="bg-red dvl bss bwbm bc-dark-red">
+  <div class="container phs full-height">
+    <div class="pull-right lhl">
+      <i class="fa fa-bars fsxxl lhl c-16"></i>
+    </div>
+    <table class="full-height">
+      <tr>
+        <td>
+          <%= link_to current_user ? user_path(current_user) : root_path do %>
+            <%= image_tag "navlogo.png", class: "dvs" %>
+          <% end %>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
