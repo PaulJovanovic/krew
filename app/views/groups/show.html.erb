@@ -7,17 +7,10 @@
         <div class="col-xs-4 phxxs mts">
           <%= image_tag user.profile_picture_large, class: "img-responsive bras" %>
         </div>
+      <% end %>
+      <% @group.group_invites.each do |group_invite| %>
         <div class="col-xs-4 phxxs mts">
-          <%= image_tag user.profile_picture_large, class: "img-responsive bras" %>
-        </div>
-        <div class="col-xs-4 phxxs mts">
-          <%= image_tag user.profile_picture_large, class: "img-responsive bras" %>
-        </div>
-        <div class="col-xs-4 phxxs mts">
-          <%= image_tag user.profile_picture_large, class: "img-responsive bras" %>
-        </div>
-        <div class="col-xs-4 phxxs mts">
-          <%= image_tag user.profile_picture_large, class: "img-responsive bras" %>
+          <%= image_tag group_invite.user.profile_picture_large, class: "img-responsive bras fade-m" %>
         </div>
       <% end %>
     </div>

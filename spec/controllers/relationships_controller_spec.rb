@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe RelationshipsController do
-  let!(:group_of_guys) { create :group, gender: "male", seeking_gender: "female" }
+  let(:guy) { create :user }
+  let!(:group_of_guys) { create :group, gender: "male", seeking_gender: "female", users: [guy] }
   let!(:group_of_girls) { create :group, gender: "female", seeking_gender: "male" }
-  let(:guy) { create :user, group: group_of_guys }
 
   before do
     request.session[:user_id] = guy.id
@@ -12,7 +12,7 @@ describe RelationshipsController do
   describe "#create" do
 
     context "group_of_guys like group_of_girls" do
-      subject { post :create, relationship: { liking_group_id: group_of_girls, action: "like" } }
+      subject { post :create, group_id: group_of_guys.id, other_group_id: group_of_girls.id, group_action: "like" }
 
       it "likes the group_of_girls for the group_of_guys" do
         subject
@@ -25,7 +25,7 @@ describe RelationshipsController do
     end
 
     context "group_of_guys dislike group_of_girls" do
-      subject { post :create, relationship: { liking_group_id: group_of_girls, action: "dislike" } }
+      subject { post :create, group_id: group_of_guys.id, other_group_id: group_of_girls.id, group_action: "dislike" }
 
       it "likes the group_of_girls for the group_of_guys" do
         subject

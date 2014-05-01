@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe GroupsController do
   let(:guy) { create :user }
+  let(:guy1) { create :user }
+  let(:guy2) { create :user }
 
   before do
     request.session[:user_id] = guy.id
@@ -17,12 +19,14 @@ describe GroupsController do
       post :create, group: {
         admin_id: guy.id,
         name: "Group Name",
+        tagline: "Group Tagline",
         gender: guy.gender,
         seeking_gender: "female",
         location_id: location.id,
-        start_date: "51-12-25",
-        end_date: "51-12-31",
-        interest_ids: [interest1.id.to_s, interest2.id.to_s, interest3.id.to_s]
+        start_date: "2051-12-25",
+        end_date: "2051-12-31",
+        interest_ids: [interest1.id.to_s, interest2.id.to_s, interest3.id.to_s],
+        user_uids: [guy1.uid, guy2.uid]
       }
     }
 
@@ -39,13 +43,20 @@ describe GroupsController do
         expect(assigns[:group].users.include?(guy)).to eq(true)
       end
 
+      it "creates group invites for each user uid entered" do
+        subject
+        user_ids = assigns[:group].group_invites.map(&:user_id)
+        expect(user_ids.include?(guy1.id)).to eq(true)
+        expect(user_ids.include?(guy2.id)).to eq(true)
+      end
+
       it "sets admin to the person creating the group" do
         subject
         expect(assigns[:group].admin).to eq(guy)
       end
 
       it "redirects to group" do
-        expect(subject).to redirect_to group_path(guy.groups.last)
+        expect(subject).to redirect_to group_path(assigns[:group])
       end
     end
   end

@@ -1,6 +1,11 @@
 <div class="row nmhxxs">
   <%= form_for @group do |f| %>
     <div class="col-md-8 col-md-offset-2 phxxs">
+      <% if @group.errors.any? %>
+        <div class="mts-plus">
+          <%= @group.errors.full_messages.join(", ") %>
+        </div>
+      <% end %>
       <%= f.hidden_field :gender, value: current_user.gender %>
       <div class="row nmhxxs mts-plus">
         <div class="col-xs-4 phxxs fss lhs">
@@ -18,75 +23,94 @@
           <%= f.text_field :tagline, class: "phxs pvxxxs bss bwam bc-dark-red full-width" %>
         </div>
       </div>
+      <div class="row nmhxxs mts-plus js-users">
+        <% @group.user_uids.each do |uid| %>
+          <div class="col-xs-4 phxxs js-user">
+            <img class="img-responsive" src="https://graph.facebook.com/<%= uid %>/picture?width=300&height=300"/>
+            <input type="hidden" name="group[user_uids][]" value="<%= uid %>"/>
+          </div>
+        <% end %>
+      </div>
+      <div class="mts-plus js-add-users">
+        <div class="phxs pvxxxs c-red fsxl fwl bras bss bwam bc-red pointer text-center full-width">
+          <i class="fa fa-plus"></i> Add Friends
+        </div>
+      </div>
       <div class="row nmhxxs mts-plus">
-        <div class="col-xs-4 phxxs">
-          <div class="row nmhxxs">
-            <div class="col-sm-4 phxxs fsxxs">
-              Visiting
-            </div>
-            <div class="col-sm-8 phxxs">
-              <%= f.select :location_id, Location.order("city asc").map { |location| [location.city, location.id] }, { prompt: "location" }, class: "phxs pvxxxs bss bwas bc-12 full-width" %>
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-4 phxxs">
-          <div class="row nmhxxs">
-            <div class="col-sm-4 phxxs fsxxs">
-              From
-            </div>
-            <div class="col-sm-8 phxxs">
-              <%= f.text_field :start_date, class: "phxs pvxxxs bss bwam bc-dark-red full-width js-datepicker" %>
+        <div class="mts">
+          <div class="col-xs-4 phxxs">
+            <div class="row nmhxxs">
+              <div class="col-sm-4 phxxs fsxxs">
+                Visiting
+              </div>
+              <div class="col-sm-8 phxxs">
+                <%= f.select :location_id, Location.order("city asc").map { |location| [location.city, location.id] }, { prompt: "location" }, class: "phxs pvxxxs bss bwas bc-12 full-width" %>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-xs-4 phxxs">
-          <div class="row nmhxxs">
-            <div class="col-sm-4 phxxs fsxxs">
-              To
+          <div class="col-xs-4 phxxs">
+            <div class="row nmhxxs">
+              <div class="col-sm-4 phxxs fsxxs">
+                From
+              </div>
+              <div class="col-sm-8 phxxs">
+                <input type="text" class="phxs pvxxxs bss bwam bc-dark-red full-width js-datepicker" value="<%= @group.start_date.strftime("%m/%d/%Y") %>">
+                <%= f.hidden_field :start_date %>
+              </div>
             </div>
-            <div class="col-sm-8 phxxs">
-              <%= f.text_field :end_date, class: "phxs pvxxxs bss bwam bc-dark-red full-width js-datepicker" %>
+          </div>
+          <div class="col-xs-4 phxxs">
+            <div class="row nmhxxs">
+              <div class="col-sm-4 phxxs fsxxs">
+                To
+              </div>
+              <div class="col-sm-8 phxxs">
+                <input type="text" class="phxs pvxxxs bss bwam bc-dark-red full-width js-datepicker" value="<%= @group.end_date.strftime("%m/%d/%Y") %>">
+                <%= f.hidden_field :end_date %>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="row nmhxxs">
+      <div class="row nmhxxs mtm">
         <% Interest.where(location_id: 1).each do |interest| %>
-          <div class="col-xs-6 phxxs mtxs fsxs">
+          <div class="col-sm-6 phxxs mtxs fsxs">
             <label>
-              <%= check_box_tag "group[interest_ids][]", interest.id %>
+              <%= check_box_tag "group[interest_ids][]", interest.id, @group.interest_ids.include?(interest.id) %>
               <%= interest.name %>
             </label>
           </div>
         <% end %>
       </div>
-      <div class="mts-plus">
-        <%= f.select :seeking_gender, ["male", "female"], { prompt: "looking for" }, class: "phxs pvxxxs bss bwas bc-12 full-width" %>
-       </div>
-      <div class="js-test">TEST</div>
-      <div class="js-users"></div>
       <%= f.submit "Create Group", class: "mtxl phxs pvxxxs bg-red c-14 c-16-hover fsxl fwl bras full-width" %>
     </div>
   <% end %>
 </div>
 
 <script>
+  var user_uids = "<%= @group.user_uids.to_json %>";
   $(function() {
-    $(".js-test").click(function() {
+    $(".js-add-users").click(function() {
       FB.ui({method: 'apprequests',
         message: 'SUP'
       }, function(response) {
         $.each(response.to, function() {
           FB.api("/" + this, function(user) {
-            $(".js-users").append(user.name + "(" + user.id + ")")
+            if (user_uids.indexOf(user.id) == -1) {
+              $(".js-users").append("<div class='col-xs-4 phxxs js-user'><img class='img-responsive' src='https://graph.facebook.com/" + user.id + "/picture?width=300&height=300'/><input type='hidden' name='group[user_uids][]' value='" + user.id + "'/></div>");
+              user_uids.push(user.id);
+            }
           })
         });
       });
     });
-    $(".js-datepicker").datepicker({
-      altFormat: "yy-mm-dd",
-      dateFormat: "mm/dd/yy",
-      altField: $(this).next()
+    $(".js-datepicker").each(function() {
+      $(this).datepicker({
+        minDate: 1,
+        altFormat: "yy/mm/dd",
+        dateFormat: "mm/dd/yy",
+        altField: $(this).next()
+      });
     });
   });
 </script>
