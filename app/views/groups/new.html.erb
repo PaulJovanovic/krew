@@ -54,7 +54,7 @@
                 From
               </div>
               <div class="col-sm-8 phxxs">
-                <input type="text" class="phxs pvxxxs bss bwam bc-dark-red full-width js-datepicker" value="<%= @group.start_date.strftime("%m/%d/%Y") %>">
+                <input type="text" class="phxs pvxxxs bss bwam bc-dark-red full-width js-datepicker" value="<%= @group.start_date.strftime("%m/%d/%Y") if @group.start_date.present? %>">
                 <%= f.hidden_field :start_date %>
               </div>
             </div>
@@ -65,7 +65,7 @@
                 To
               </div>
               <div class="col-sm-8 phxxs">
-                <input type="text" class="phxs pvxxxs bss bwam bc-dark-red full-width js-datepicker" value="<%= @group.end_date.strftime("%m/%d/%Y") %>">
+                <input type="text" class="phxs pvxxxs bss bwam bc-dark-red full-width js-datepicker" value="<%= @group.end_date.strftime("%m/%d/%Y") if @group.end_date.present? %>">
                 <%= f.hidden_field :end_date %>
               </div>
             </div>
